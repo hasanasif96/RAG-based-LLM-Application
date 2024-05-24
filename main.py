@@ -1,19 +1,11 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
 import json
 import sys
 from pypdf import PdfReader
-#import boto3
 import streamlit as st
 from langchain.text_splitter import (RecursiveCharacterTextSplitter)
 from langchain.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
-## We will be suing Titan Embeddings Model To generate Embedding
 import numpy as np
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFDirectoryLoader
@@ -23,7 +15,7 @@ import os
 from langchain_community.document_loaders import PyPDFLoader
 from PyPDF2 import PdfFileReader
 import io
-os.environ["OPENAI_API_KEY"] = "sk-proj-uGKUCItOdkAkFE1eisrxT3BlbkFJpymreim8zueOC2OGDmxD"
+os.environ["OPENAI_API_KEY"] = ""
 
 
 ## Data ingestion
@@ -42,11 +34,9 @@ def data_ingestion():
 ## Vector Embedding and vector store
 
 def get_vector_store(docs):
-
-
     vectorstore_faiss = FAISS.from_documents(
         docs,
-        OpenAIEmbeddings(openai_api_key="sk-proj-uGKUCItOdkAkFE1eisrxT3BlbkFJpymreim8zueOC2OGDmxD")
+        OpenAIEmbeddings()
     )
     vectorstore_faiss.save_local("faiss_index")
 
@@ -84,7 +74,6 @@ def get_response_llm(llm, vectorstore_faiss, query):
 
 def main():
     st.set_page_config("Chat PDF")
-
     st.header("Chat with PDF using RAG")
 
     user_question = st.text_input("Ask a Question from the PDF Files")
