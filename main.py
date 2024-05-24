@@ -2,19 +2,19 @@ import json
 import sys
 from pypdf import PdfReader
 import streamlit as st
-from langchain.text_splitter import (RecursiveCharacterTextSplitter)
+import numpy as np
+import os
+import io
+
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
-import numpy as np
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import PyPDFDirectoryLoader
-from langchain_openai import ChatOpenAI
-from langchain_openai import OpenAIEmbeddings
-import os
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.document_loaders import PyPDFLoader
 from PyPDF2 import PdfFileReader
-import io
+
 os.environ["OPENAI_API_KEY"] = ""
 
 
@@ -32,7 +32,6 @@ def data_ingestion():
 
 
 ## Vector Embedding and vector store
-
 def get_vector_store(docs):
     vectorstore_faiss = FAISS.from_documents(
         docs,
@@ -42,13 +41,12 @@ def get_vector_store(docs):
 
 
 def get_llm():
-    os.environ["OPENAI_API_KEY"] = "sk-proj-uGKUCItOdkAkFE1eisrxT3BlbkFJpymreim8zueOC2OGDmxD"
+    os.environ["OPENAI_API_KEY"] = ""
     llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 
     return llm
 
 
-from langchain_core.prompts import ChatPromptTemplate
 prompt = ChatPromptTemplate.from_template("""
 Answer the following question based only on the provided context.
 Think step by step before providing a detailed answer.
@@ -89,7 +87,7 @@ def main():
 
     if st.button("Output"):
         with st.spinner("Processing..."):
-            faiss_index = FAISS.load_local("faiss_index",OpenAIEmbeddings(),allow_dangerous_deserialization=True)
+            faiss_index = FAISS.load_local("faiss_index",OpenAIEmbeddings())
             llm = get_llm()
 
             # faiss_index = get_vector_store(docs)
