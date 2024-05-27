@@ -10,7 +10,8 @@ Access to a vector database (e.g., Chroma, Pinecone)
 API keys or credentials for the vector database and LLM
 
 # Tools Used
-- LangChain    
+- LangChain
+- Python   
 - FAISS
 - OpenAI
 - Streamlit
