@@ -23,7 +23,7 @@ def data_ingestion():
     loader = PyPDFDirectoryLoader("data")
     documents = loader.load()
 
-    # - in our testing Character split works better with this PDF data set
+    
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000,
                                                    chunk_overlap=200)
 
